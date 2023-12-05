@@ -5,17 +5,21 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pessoa", indexes = {
-        @Index(name = "pessoa_nome_idx", columnList = "nome")
-})
+        @Index(name = "pessoa_nome_idx", columnList = "nome") })
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("pessoa")
 public class Pessoa implements Serializable {
     private static final long serialVersionUID = 1L;
 
