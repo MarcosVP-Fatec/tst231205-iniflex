@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 @PrimaryKeyJoinColumn(name = "idpessoa")
 public class Funcionario extends Pessoa {
 
-    @Column(name = "salario", nullable = false, precision = 2)
+    @Column(name = "salario", nullable = false, precision = 12, scale = 2)
     private BigDecimal salario;
 
     public final static short CAMPO_TAMANHO_FUNCIONARIO_FUNCAO = 40;
