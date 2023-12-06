@@ -1,0 +1,6 @@
+tasks:
+  - init: |
+    chear
+    mysql < ./src/main/resources/DDL_db.sql
+    
+image: gitpod/workspace-mysql
