@@ -1,6 +1,7 @@
 package br.com.mvp.maonamassa.model.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,18 @@ public class FuncionarioService {
 
     }
 
+    public ResponseEntity<Object> updateFuncionario(Long id, FuncionarioRecordDto funcionarioRecordDto) {
+
+        Optional<Funcionario> optFuncionario = funcionarioRepository.findById(id);
+        if (optFuncionario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Funcionário não encontrado!");
+        }
+        var funcionario = optFuncionario.get();
+        BeanUtils.copyProperties(funcionarioRecordDto, funcionario);
+        return ResponseEntity.status(HttpStatus.OK).body(funcionarioRepository.save(funcionario));
+
+    }
+
     public ResponseEntity<Object> deleteFuncionario(@PathVariable(value = "id") Long id) {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(id);
         if (funcionario.isEmpty()) {
@@ -47,6 +60,10 @@ public class FuncionarioService {
         return new FuncionarioRecordDto(nome, dataNascimento, salario, funcao);
     }
 
+    public FuncionarioRecordDto toDto(Funcionario func) {
+        return new FuncionarioRecordDto(func.getNome(), func.getDataNascimento(), func.getSalario(), func.getFuncao());
+    }
+
     public Funcionario getByNome(String nome) {
         Optional<Funcionario> func = funcionarioRepository.findByNome(nome);
         if (func.isPresent()) {
@@ -57,8 +74,8 @@ public class FuncionarioService {
     }
 
     // Seleciona e imprime todos os funcionários por ordem de inclusão
-    public String listarTodosOsFuncionarios(String tit, FuncionarioRepository repo) {
-        List<Funcionario> lista = repo.findAllByOrderByIdPessoa();
+    public String listarTodosOsFuncionarios(String tit) {
+        List<Funcionario> lista = funcionarioRepository.findAllByOrderByIdPessoa();
         return geraListaFuncionarios(tit, lista);
     }
 
@@ -95,6 +112,18 @@ public class FuncionarioService {
         }
         txt.append(tit1);
         return txt.toString();
+    }
+
+    // Concede aumento de salário
+    public void aumentarSalarios(BigDecimal porcento) {
+        List<Funcionario> lista = funcionarioRepository.findAllByOrderByIdPessoa();
+        final BigDecimal CEM = new BigDecimal(100);
+        for (Funcionario funcionario : lista) {
+            funcionario.setSalario(funcionario.getSalario()
+                    .add(funcionario.getSalario().divide(CEM, RoundingMode.HALF_EVEN).multiply(porcento)));
+
+            updateFuncionario(funcionario.getIdPessoa(), toDto(funcionario));
+        }
     }
 
 }

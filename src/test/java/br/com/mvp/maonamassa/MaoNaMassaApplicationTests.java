@@ -26,9 +26,6 @@ class MaoNaMassaApplicationTests {
 	@Autowired
 	FuncionarioService serv;
 
-	@Autowired
-	FuncionarioRepository repo;
-
 	@Test
 	void contextLoads() throws IOException {
 		title("INÍCIO DAS TAREFAS");
@@ -41,6 +38,12 @@ class MaoNaMassaApplicationTests {
 
 		title("REMOVENDO O FUNCIONÁRIO \"JOÃO\" - 3.2");
 		atividade3_2();
+
+		title("RELATÓRIO TODOS OS FUNCIONÁRIOS E INFORMAÇÕES");
+		atividade3_3();
+
+		title("OS FUNCIONÁRIOS RECEBERAM 10% DE AUMENTO");
+		atividade3_4();
 
 	}
 
@@ -88,7 +91,7 @@ class MaoNaMassaApplicationTests {
 		ctrl.saveFuncionario(
 				serv.toDto("Helena", LocalDate.of(1996, Month.SEPTEMBER, 2), new BigDecimal(2799.93), "Gerente"));
 
-		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS", repo), "01-inserindo-funcionarios.txt");
+		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS"), "01-inserindo-funcionarios.txt");
 	}
 
 	private void atividade3_2() throws IOException {
@@ -96,7 +99,18 @@ class MaoNaMassaApplicationTests {
 		if (joao != null) {
 			serv.deleteFuncionario(joao.getIdPessoa());
 		}
-		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS (SEM O \"JOÃO\")", repo),
+		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS (SEM O \"JOÃO\")"),
 				"02-excluindo-funcionario-joao.txt");
+	}
+
+	private void atividade3_3() throws IOException {
+		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS COM SUAS INFORMAÇÕES"),
+				"03-todos-funcionarios-com-suas-informacoes.txt");
+	}
+
+	private void atividade3_4() throws IOException {
+		serv.aumentarSalarios(new BigDecimal(10));
+		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS COM AUMENTO DE 10%"),
+				"04-todos-funcionarios-com-aumento-salarial.txt");
 	}
 }
