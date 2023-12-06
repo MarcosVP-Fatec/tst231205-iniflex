@@ -1,6 +1,6 @@
 tasks:
   - init: |
     clear
-    mysql < src/main/resources/DDL_db.sql
+    mysql < DDL_db.sql
 
 image: gitpod/workspace-mysql
