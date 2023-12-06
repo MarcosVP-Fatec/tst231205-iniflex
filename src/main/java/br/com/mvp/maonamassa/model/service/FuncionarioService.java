@@ -2,11 +2,14 @@ package br.com.mvp.maonamassa.model.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -81,6 +84,50 @@ public class FuncionarioService {
     public String listarTodosOsFuncionarios(String tit) {
         List<Funcionario> lista = funcionarioRepository.findAllByOrderByIdPessoa();
         return geraListaFuncionarios(tit, lista);
+    }
+
+    // Seleciona e imprime quantos salarios mínimos ganha cada funcionário
+    public String listarQuantosSalariosMinimos(BigDecimal salMin) {
+        var txt = new StringBuilder();
+        final int TAMSAL = 12;
+        final int TAMQTD = 14;
+        final String tit1 = "+" + "-".repeat(Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "+" + "-".repeat(10)
+                + "+" + "-".repeat(TAMSAL)
+                + "+" + "-".repeat(TAMQTD)
+                + "+\n";
+        final String tit2 = "|" + Util.padR("Nome", Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "|" + Util.padR("DtNasc", 10)
+                + "|" + Util.padL("Salário", TAMSAL)
+                + "|" + Util.padR("Qtd Sal Mínimo", TAMQTD)
+                + "|\n";
+
+        List<Funcionario> lista = funcionarioRepository.findAllByOrderByIdPessoa();
+        txt.append("");
+        final int LARG_TITULO = tit1.trim().length() - 2;
+        txt.append("+" + "-".repeat(LARG_TITULO) + "+\n");
+        txt.append("|"
+                + Util.padR(" QUANTIDADE DE SALÁRIOS MÍNIMOS POR FUNCIONÁRIO - SAL MÍN: " + Util.maskDec(salMin, 10),
+                        LARG_TITULO)
+                + "|\n");
+
+        txt.append(tit1 + tit2 + tit1);
+        final DecimalFormat MASCARA = new DecimalFormat("###,##0.000",
+                new DecimalFormatSymbols(new Locale("pt", "BR")));
+
+        for (Funcionario funcionario : lista) {
+            txt.append("|" + Util.padR(funcionario.getNome(), Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                    + "|" + Util.dToStr(funcionario.getDataNascimento())
+                    + "|" + Util.maskDec(funcionario.getSalario(), TAMSAL)
+                    + "|"
+                    + Util.padL(String.valueOf(
+                            MASCARA.format(funcionario.getSalario().divide(salMin, 3, RoundingMode.HALF_UP)).trim()),
+                            TAMQTD)
+                    + "|\n");
+        }
+        txt.append(tit1);
+        return txt.toString();
+
     }
 
     // Seleciona e imprime um Map de funcionarios por funções

@@ -61,6 +61,11 @@ class MaoNaMassaApplicationTests {
 
 		title("TOTAL DOS SALÁRIOS DOS FUNCIONÁRIOS");
 		atividade3_10();
+
+		title(String.format("QUANTOS SALÁRIOS MÍNIMOS DE %s GANHA CADA FUNCIONÁRIO",
+				Util.maskDec(new BigDecimal(1212.0), 12)));
+		atividade3_11();
+
 	}
 
 	private static void title(String txt) {
@@ -158,6 +163,11 @@ class MaoNaMassaApplicationTests {
 	private void atividade3_10() throws IOException {
 		Util.geraTxt(serv.listarTotalDeSalarios(),
 				"10-total-de-salarios.txt");
+	}
+
+	private void atividade3_11() throws IOException {
+		Util.geraTxt(serv.listarQuantosSalariosMinimos(new BigDecimal(1212.0)),
+				"11-quantos-salarios-minimos.txt");
 	}
 
 }
