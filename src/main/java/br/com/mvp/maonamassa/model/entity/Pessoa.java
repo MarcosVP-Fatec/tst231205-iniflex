@@ -2,7 +2,6 @@ package br.com.mvp.maonamassa.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
@@ -25,8 +24,8 @@ public class Pessoa implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idpessoa", nullable = false)
-    private UUID idPessoa;
+    @Column(name = "idpessoa")
+    private Long idPessoa;
 
     public static final short CAMPO_TAMANHO_PESSOA_NOME = 40;
     @Column(name = "nome", length = CAMPO_TAMANHO_PESSOA_NOME, nullable = false)
@@ -36,11 +35,11 @@ public class Pessoa implements Serializable {
     private LocalDate dataNascimento;
 
     // G&S
-    public UUID getIdPessoa() {
+    public Long getIdPessoa() {
         return idPessoa;
     }
 
-    public void setIdPessoa(UUID idPessoa) {
+    public void setIdPessoa(Long idPessoa) {
         this.idPessoa = idPessoa;
     }
 
@@ -50,6 +49,14 @@ public class Pessoa implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
 }
