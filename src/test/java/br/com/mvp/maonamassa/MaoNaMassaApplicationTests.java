@@ -58,6 +58,9 @@ class MaoNaMassaApplicationTests {
 
 		title("FUNCIONÁRIOS POR ORDEM ALFABÉTICA");
 		atividade3_9();
+
+		title("TOTAL DOS SALÁRIOS DOS FUNCIONÁRIOS");
+		atividade3_10();
 	}
 
 	private static void title(String txt) {
@@ -150,6 +153,11 @@ class MaoNaMassaApplicationTests {
 	private void atividade3_9() throws IOException {
 		Util.geraTxt(serv.listarTodosOsFuncionariosPorOrdemAlfabetica("FUNCIONÁRIOS POR ORDEM ALFABÉTICA"),
 				"09-funcionarios-por-ordem-alfabetica.txt");
+	}
+
+	private void atividade3_10() throws IOException {
+		Util.geraTxt(serv.listarTotalDeSalarios(),
+				"10-total-de-salarios.txt");
 	}
 
 }

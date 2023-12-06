@@ -274,6 +274,13 @@ public class FuncionarioService {
                 func.getNome(), Util.idade(func.getDataNascimento(), LocalDate.now()));
     }
 
+    // Lista o total de salários
+    public String listarTotalDeSalarios() {
+        BigDecimal soma = funcionarioRepository.sumBySalario();
+        return String.format("O total dos salários dos funcionários é %s.",
+                Util.maskDec(soma, 12));
+    }
+
     // Lista de funcionários por ordem alfabética
     public List<Funcionario> getFuncionariosPorOrdemAlfabetica() {
         List<Funcionario> lista = funcionarioRepository.findAllByOrderByNome();

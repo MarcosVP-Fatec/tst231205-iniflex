@@ -1,5 +1,6 @@
 package br.com.mvp.maonamassa.model.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,5 +23,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     List<Funcionario> findFirstByOrderByDataNascimentoAsc();
 
     Optional<Funcionario> findByNome(String nome);
+
+    @Query("select sum(f.salario) from Funcionario f")
+    BigDecimal sumBySalario();
 
 }
