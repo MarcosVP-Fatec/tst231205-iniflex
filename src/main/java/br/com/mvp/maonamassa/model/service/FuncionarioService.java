@@ -274,4 +274,18 @@ public class FuncionarioService {
                 func.getNome(), Util.idade(func.getDataNascimento(), LocalDate.now()));
     }
 
+    // Lista de funcionários por ordem alfabética
+    public List<Funcionario> getFuncionariosPorOrdemAlfabetica() {
+        List<Funcionario> lista = funcionarioRepository.findAllByOrderByNome();
+        if (lista.size() == 0)
+            throw new RuntimeException("Não há funcionários cadastrados!");
+        return lista;
+    }
+
+    // Seleciona e imprime todos os funcionários por ordem alfabética
+    public String listarTodosOsFuncionariosPorOrdemAlfabetica(String tit) {
+        List<Funcionario> lista = getFuncionariosPorOrdemAlfabetica();
+        return geraListaFuncionarios(tit, lista);
+    }
+
 }

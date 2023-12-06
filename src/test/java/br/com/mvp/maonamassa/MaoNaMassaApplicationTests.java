@@ -55,6 +55,9 @@ class MaoNaMassaApplicationTests {
 
 		title("FUNCIONÁRIO COM MAIOR IDADE");
 		atividade3_8();
+
+		title("FUNCIONÁRIOS POR ORDEM ALFABÉTICA");
+		atividade3_9();
 	}
 
 	private static void title(String txt) {
@@ -97,7 +100,7 @@ class MaoNaMassaApplicationTests {
 		ctrl.saveFuncionario(
 				serv.toDto("Laura", LocalDate.of(1994, Month.JULY, 8), new BigDecimal(3017.45), "Gerente"));
 		ctrl.saveFuncionario(
-				serv.toDto("Heloí­sa", LocalDate.of(2003, Month.MAY, 24), new BigDecimal(1606.85), "Eletricista"));
+				serv.toDto("Heloísa", LocalDate.of(2003, Month.MAY, 24), new BigDecimal(1606.85), "Eletricista"));
 		ctrl.saveFuncionario(
 				serv.toDto("Helena", LocalDate.of(1996, Month.SEPTEMBER, 2), new BigDecimal(2799.93), "Gerente"));
 
@@ -142,6 +145,11 @@ class MaoNaMassaApplicationTests {
 	private void atividade3_8() throws IOException {
 		Util.geraTxt(serv.listarFuncionarioMaisVelho(),
 				"08-funcionario-com-maior-idade.txt");
+	}
+
+	private void atividade3_9() throws IOException {
+		Util.geraTxt(serv.listarTodosOsFuncionariosPorOrdemAlfabetica("FUNCIONÁRIOS POR ORDEM ALFABÉTICA"),
+				"09-funcionarios-por-ordem-alfabetica.txt");
 	}
 
 }
