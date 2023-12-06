@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ class MaoNaMassaApplicationTests {
 
 		title("FUNCIONÁRIOS AGRUPADOS POR FUNÇÃO");
 		atividade3_6();
+
+		title("FUNCIONÁRIOS QUE FAZEM ANIVERSÁRIO NOS MESES 10 E 12");
+		atividade3_7();
 	}
 
 	private static void title(String txt) {
@@ -127,5 +131,10 @@ class MaoNaMassaApplicationTests {
 	private void atividade3_6() throws IOException {
 		Util.geraTxt(serv.listarTodosOsFuncionariosPorFuncao(),
 				"06-funcionarios-agrupados-por-funcao.txt");
+	}
+
+	private void atividade3_7() throws IOException {
+		Util.geraTxt(serv.listarAniversariantesNosMeses(Arrays.asList(10, 12)),
+				"07-funcionarios-aniversariantes-meses-10-12.txt");
 	}
 }

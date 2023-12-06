@@ -120,6 +120,41 @@ public class FuncionarioService {
         return txt.toString();
     }
 
+    // listarAniversariantesNosMeses
+    // Gera um map de funcionÃ¡rios por aniversÃ¡rio
+    public String listarAniversariantesNosMeses(List<Integer> meses) {
+        Map<Integer, List<Funcionario>> lista = mapFuncionariosAniversariosNosMeses(meses);
+        final String tit1 = "+" + "-".repeat(Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "+" + "-".repeat(10)
+                + "+" + "-".repeat(Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                + "+\n";
+        final String tit2 = "|" + Util.padR("Nome", Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "|" + Util.padR("DtNasc", 10)
+                + "|" + Util.padR("Função", Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                + "|\n";
+        var txt = new StringBuilder();
+        txt.append("");
+        final int LARG_TITULO = tit1.trim().length() - 2;
+        final String titulo = "FUNCIONÁRIOS POR MÊS DE ANIVERSÁRIO";
+        txt.append("+" + "-".repeat(LARG_TITULO) + "+\n");
+        txt.append("|" + Util.padR(" " + titulo, LARG_TITULO) + "|\n");
+
+        txt.append(tit1 + tit2);
+        List<Integer> chaves = new ArrayList<>(lista.keySet());
+        Collections.sort(chaves);
+        for (Integer chave : chaves) {
+            txt.append(tit1 + "| " + Util.padR("Mês: " + String.valueOf(chave), LARG_TITULO - 1) + "|\n" + tit1);
+            for (Funcionario funcionario : lista.get(chave)) {
+                txt.append("|" + Util.padR(funcionario.getNome(), Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                        + "|" + Util.dToStr(funcionario.getDataNascimento())
+                        + "|" + Util.padR(funcionario.getFuncao(), Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                        + "|\n");
+            }
+        }
+        txt.append(tit1);
+        return txt.toString();
+    }
+
     // Imprime a List<Funcionario>
     private static String geraListaFuncionarios(String titulo, List<Funcionario> lista) {
         final int TAMSAL = 12;
@@ -189,6 +224,30 @@ public class FuncionarioService {
 
         mapaFuncoes.put(funcaoAtual, parcial);
         return mapaFuncoes;
+    }
+
+    // Busca todos funcionários anioversariantes
+    public Map<Integer, List<Funcionario>> mapFuncionariosAniversariosNosMeses(List<Integer> meses) {
+        List<Funcionario> lista = funcionarioRepository.findAllByMesesNascimento(meses);
+        if (lista.size() == 0)
+            throw new RuntimeException("Não há funcionários cadastrados nos meses solicitados!");
+
+        List<List<Funcionario>> funcs = new ArrayList<List<Funcionario>>();
+        for (int i = 0; i < 12; i++) {
+            funcs.add(new ArrayList<Funcionario>());
+        }
+
+        for (Funcionario funcionario : lista) {
+            final int indice = funcionario.getDataNascimento().getMonthValue() - 1;
+            funcs.get(indice).add(funcionario);
+        }
+
+        Map<Integer, List<Funcionario>> mapaAniversarios = new HashMap<Integer, List<Funcionario>>();
+        for (int i = 0; i < 12; i++) {
+            if (funcs.get(i).size() > 0)
+                mapaAniversarios.put(i + 1, funcs.get(i));
+        }
+        return mapaAniversarios;
     }
 
     // Gera lista de funcionários por função
