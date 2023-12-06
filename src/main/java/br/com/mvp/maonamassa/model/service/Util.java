@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Locale;
 
 import org.springframework.stereotype.Service;
@@ -71,6 +72,11 @@ public class Util {
     // Extrai parte à direita do texto conforme tamanho informado
     public static String right(String texto, int nTam) {
         return texto.substring(texto.length() <= nTam ? 0 : texto.length() - nTam);
+    }
+
+    // Calcula a idade em anos inteiros
+    public static int idade(LocalDate nascimento, LocalDate atual) {
+        return Period.between(nascimento, atual).getYears();
     }
 
 }

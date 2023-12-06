@@ -17,6 +17,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     @Query("select f from Funcionario f join Pessoa p on (f.idPessoa = p.idPessoa) where month(f.dataNascimento) in :meses order by month(f.dataNascimento), day(f.dataNascimento), upper(f.nome)")
     List<Funcionario> findAllByMesesNascimento(List<Integer> meses);
 
+    List<Funcionario> findFirstByOrderByDataNascimentoAsc();
+
     Optional<Funcionario> findByNome(String nome);
 
 }

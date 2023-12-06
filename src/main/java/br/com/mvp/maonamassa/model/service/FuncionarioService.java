@@ -120,7 +120,6 @@ public class FuncionarioService {
         return txt.toString();
     }
 
-    // listarAniversariantesNosMeses
     // Gera um map de funcionÃ¡rios por aniversÃ¡rio
     public String listarAniversariantesNosMeses(List<Integer> meses) {
         Map<Integer, List<Funcionario>> lista = mapFuncionariosAniversariosNosMeses(meses);
@@ -259,4 +258,20 @@ public class FuncionarioService {
         }
         return txt.toString();
     }
+
+    // Pega o funcionário mais velho
+    public Funcionario getFuncionarioMaisVelho() {
+        List<Funcionario> func = funcionarioRepository.findFirstByOrderByDataNascimentoAsc();
+        if (func.size() == 0)
+            throw new RuntimeException("Não há funcionários cadastrados!");
+        return func.get(0);
+    }
+
+    // Lista o funcionário com mais idade
+    public String listarFuncionarioMaisVelho() {
+        Funcionario func = getFuncionarioMaisVelho();
+        return String.format("O(a) funcionário(a) com a maior idade é o(a) \"%s\" com %d anos.",
+                func.getNome(), Util.idade(func.getDataNascimento(), LocalDate.now()));
+    }
+
 }

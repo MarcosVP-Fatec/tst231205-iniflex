@@ -1,6 +1,5 @@
 package br.com.mvp.maonamassa;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.mvp.controller.FuncionarioController;
 import br.com.mvp.maonamassa.model.entity.Funcionario;
-import br.com.mvp.maonamassa.model.repository.FuncionarioRepository;
 import br.com.mvp.maonamassa.model.service.FuncionarioService;
 import br.com.mvp.maonamassa.model.service.Util;
 
@@ -54,6 +52,9 @@ class MaoNaMassaApplicationTests {
 
 		title("FUNCIONÁRIOS QUE FAZEM ANIVERSÁRIO NOS MESES 10 E 12");
 		atividade3_7();
+
+		title("FUNCIONÁRIO COM MAIOR IDADE");
+		atividade3_8();
 	}
 
 	private static void title(String txt) {
@@ -137,4 +138,10 @@ class MaoNaMassaApplicationTests {
 		Util.geraTxt(serv.listarAniversariantesNosMeses(Arrays.asList(10, 12)),
 				"07-funcionarios-aniversariantes-meses-10-12.txt");
 	}
+
+	private void atividade3_8() throws IOException {
+		Util.geraTxt(serv.listarFuncionarioMaisVelho(),
+				"08-funcionario-com-maior-idade.txt");
+	}
+
 }
