@@ -39,6 +39,9 @@ class MaoNaMassaApplicationTests {
 		title("INSERINDO FUNCIONÁRIOS 3.1");
 		atividade3_1();
 
+		title("REMOVENDO O FUNCIONÁRIO \"JOÃO\" - 3.2");
+		atividade3_2();
+
 	}
 
 	private static void title(String txt) {
@@ -88,4 +91,12 @@ class MaoNaMassaApplicationTests {
 		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS", repo), "01-inserindo-funcionarios.txt");
 	}
 
+	private void atividade3_2() throws IOException {
+		Funcionario joao = serv.getByNome("João");
+		if (joao != null) {
+			serv.deleteFuncionario(joao.getIdPessoa());
+		}
+		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS (SEM O \"JOÃO\")", repo),
+				"02-excluindo-funcionario-joao.txt");
+	}
 }

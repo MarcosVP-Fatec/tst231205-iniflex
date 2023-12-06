@@ -47,6 +47,15 @@ public class FuncionarioService {
         return new FuncionarioRecordDto(nome, dataNascimento, salario, funcao);
     }
 
+    public Funcionario getByNome(String nome) {
+        Optional<Funcionario> func = funcionarioRepository.findByNome(nome);
+        if (func.isPresent()) {
+            return func.get();
+        } else {
+            return null;
+        }
+    }
+
     // Seleciona e imprime todos os funcionários por ordem de inclusão
     public String listarTodosOsFuncionarios(String tit, FuncionarioRepository repo) {
         List<Funcionario> lista = repo.findAllByOrderByIdPessoa();
