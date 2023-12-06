@@ -48,6 +48,8 @@ class MaoNaMassaApplicationTests {
 		title("FUNCIONÁRIOS POR FUNÇÃO");
 		atividade3_5();
 
+		title("FUNCIONÁRIOS AGRUPADOS POR FUNÇÃO");
+		atividade3_6();
 	}
 
 	private static void title(String txt) {
@@ -122,4 +124,8 @@ class MaoNaMassaApplicationTests {
 				"05-funcionarios-por-funcoes.txt");
 	}
 
+	private void atividade3_6() throws IOException {
+		Util.geraTxt(serv.listarTodosOsFuncionariosPorFuncao(),
+				"06-funcionarios-agrupados-por-funcao.txt");
+	}
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +81,43 @@ public class FuncionarioService {
     public String listarTodosOsFuncionarios(String tit) {
         List<Funcionario> lista = funcionarioRepository.findAllByOrderByIdPessoa();
         return geraListaFuncionarios(tit, lista);
+    }
+
+    // Seleciona e imprime um Map de funcionarios por funções
+    public String listarTodosOsFuncionariosPorFuncao() {
+        Map<String, List<Funcionario>> lista = getMapFuncionariosPorFuncao();
+        StringBuilder txt = new StringBuilder();
+        final int TAMSAL = 12;
+        final String tit1 = "+" + "-".repeat(Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "+" + "-".repeat(10)
+                + "+" + "-".repeat(TAMSAL)
+                + "+" + "-".repeat(Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                + "+\n";
+        final String tit2 = "|" + Util.padR("Nome", Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                + "|" + Util.padR("DtNasc", 10)
+                + "|" + Util.padL("Salário", TAMSAL)
+                + "|" + Util.padR("Função", Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                + "|\n";
+        txt.append("");
+        final int LARG_TITULO = tit1.trim().length() - 2;
+        final String titulo = "FUNCIONÁRIOS AGRUPADOS POR FUNÇÃO";
+        txt.append("+" + "-".repeat(LARG_TITULO) + "+\n");
+        txt.append("|" + Util.padR(" " + titulo, LARG_TITULO) + "|\n");
+        txt.append(tit1 + tit2);
+        List<String> chaves = new ArrayList<>(lista.keySet());
+        Collections.sort(chaves);
+        for (String chave : chaves) {
+            txt.append(tit1 + "| " + Util.padR("Função: " + chave.toUpperCase(), LARG_TITULO - 1) + "|\n" + tit1);
+            for (Funcionario funcionario : lista.get(chave)) {
+                txt.append("|" + Util.padR(funcionario.getNome(), Funcionario.CAMPO_TAMANHO_PESSOA_NOME)
+                        + "|" + Util.dToStr(funcionario.getDataNascimento())
+                        + "|" + Util.maskDec(funcionario.getSalario(), TAMSAL)
+                        + "|" + Util.padR(funcionario.getFuncao(), Funcionario.CAMPO_TAMANHO_FUNCIONARIO_FUNCAO)
+                        + "|\n");
+            }
+        }
+        txt.append(tit1);
+        return txt.toString();
     }
 
     // Imprime a List<Funcionario>
