@@ -45,6 +45,9 @@ class MaoNaMassaApplicationTests {
 		title("OS FUNCIONÁRIOS RECEBERAM 10% DE AUMENTO");
 		atividade3_4();
 
+		title("FUNCIONÁRIOS POR FUNÇÃO");
+		atividade3_5();
+
 	}
 
 	private static void title(String txt) {
@@ -113,4 +116,10 @@ class MaoNaMassaApplicationTests {
 		Util.geraTxt(serv.listarTodosOsFuncionarios("TODOS OS FUNCIONÁRIOS COM AUMENTO DE 10%"),
 				"04-todos-funcionarios-com-aumento-salarial.txt");
 	}
+
+	private void atividade3_5() throws IOException {
+		Util.geraTxt(serv.geraListaFuncionariosPorFuncao(),
+				"05-funcionarios-por-funcoes.txt");
+	}
+
 }

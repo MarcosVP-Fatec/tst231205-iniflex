@@ -3,7 +3,10 @@ package br.com.mvp.maonamassa.model.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -126,4 +129,37 @@ public class FuncionarioService {
         }
     }
 
+    // Gera um map de funcionários por função
+    public Map<String, List<Funcionario>> getMapFuncionariosPorFuncao() {
+
+        List<Funcionario> lista = funcionarioRepository.findAllByOrderByFuncaoAscIdPessoaAsc();
+        if (lista.size() == 0)
+            throw new RuntimeException("Não há funcionários cadastrados!");
+
+        Map<String, List<Funcionario>> mapaFuncoes = new HashMap<String, List<Funcionario>>();
+        String funcaoAtual = lista.get(0).getFuncao();
+        List<Funcionario> parcial = new ArrayList<Funcionario>();
+
+        for (Funcionario funcionario : lista) {
+            if (!funcaoAtual.equals(funcionario.getFuncao())) {
+                mapaFuncoes.put(funcaoAtual, parcial);
+                parcial = new ArrayList<Funcionario>();
+                funcaoAtual = funcionario.getFuncao();
+            }
+            parcial.add(funcionario);
+        }
+
+        mapaFuncoes.put(funcaoAtual, parcial);
+        return mapaFuncoes;
+    }
+
+    // Gera lista de funcionários por função
+    public String geraListaFuncionariosPorFuncao() {
+        StringBuilder txt = new StringBuilder();
+        Map<String, List<Funcionario>> mapFuncionariosPorFuncao = getMapFuncionariosPorFuncao();
+        for (String chave : mapFuncionariosPorFuncao.keySet()) {
+            txt.append(geraListaFuncionarios("FUNÇÃO: " + chave.toUpperCase(), mapFuncionariosPorFuncao.get(chave)));
+        }
+        return txt.toString();
+    }
 }

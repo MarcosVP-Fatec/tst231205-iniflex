@@ -11,6 +11,8 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
 
     List<Funcionario> findAllByOrderByIdPessoa();
 
+    List<Funcionario> findAllByOrderByFuncaoAscIdPessoaAsc();
+
     Optional<Funcionario> findByNome(String nome);
 
 }
